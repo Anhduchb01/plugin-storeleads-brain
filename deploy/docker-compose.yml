@@ -1,0 +1,23 @@
+# storeleads-brain on the ecvision host, next to storeleads-clickhouse and storeleads-grafana.
+# Reached from the internet only through the Cloudflare tunnel: storeleads-brain.ecvision.ai → http://localhost:3210 (BRAIN_PORT)
+services:
+  brain:
+    build: ..
+    image: storeleads-brain:latest
+    container_name: storeleads-brain
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      PORT: "8080"
+      CLICKHOUSE_URL: http://storeleads-clickhouse:8123
+      TOKENS_FILE: /run/brain/tokens.txt
+    ports:
+      - "127.0.0.1:${BRAIN_PORT:-3210}:8080"
+    volumes:
+      - ./tokens.txt:/run/brain/tokens.txt:ro
+    mem_limit: 512m
+    networks: [clickhouse_default]
+networks:
+  clickhouse_default:
+    external: true

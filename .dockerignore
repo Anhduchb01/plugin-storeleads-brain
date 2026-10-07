@@ -1,0 +1,9 @@
+node_modules
+dist
+.env*
+test
+scripts
+plugin
+deploy
+skill-src
+*.md

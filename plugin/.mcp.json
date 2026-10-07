@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "brain": {
+      "type": "http",
+      "url": "https://storeleads-brain.ecvision.ai/mcp",
+      "headers": { "Authorization": "Bearer ${user_config.brain_token}" }
+    }
+  }
+}
