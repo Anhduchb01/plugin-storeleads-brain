@@ -20,8 +20,9 @@ src/
   auth/          static.ts (token cá nhân), slack.ts (OAuth 2.1 + Slack OIDC), tokens.ts (JWT)
 sql/schema.sql   database usage
 deploy/          docker-compose + script cho máy ecvision
-plugin/          mẫu .mcp.json, hooks.json, mục "Team memory" cho skill
-skill-src/       bản sao skill StoreLeads (nguồn cho build:skill và test)
+plugin/          plugin Claude Code storeleads-brain (.mcp.json, hooks), marketplace ở .claude-plugin/
+install.sh/.ps1  installer một dòng cho user
+skill-src/       bản sao skill StoreLeads + mục Team memory (nguồn cho build:skill và test)
 scripts/         build-skill.mjs, smoke.ts
 ```
 
@@ -53,15 +54,31 @@ Cập nhật: `git pull && docker compose up -d --build`.
 
 Kiểm tra từ máy bất kỳ: `BRAIN_URL=https://storeleads-brain.ecvision.ai BRAIN_TOKEN=<token> npm run smoke`.
 
-## Dùng từ Claude Code (trước khi plugin được cập nhật)
+## Cài cho user (Claude Code)
+
+Gửi cho user token (từ `./new-token.sh`) và một dòng tương ứng, rồi Enter, dán token khi được hỏi:
+
+**Mac / Linux** — Terminal:
 
 ```bash
-claude mcp add --transport http -s user storeleads-brain https://storeleads-brain.ecvision.ai/mcp \
-  --header "Authorization: Bearer <token>"
+curl -fsSL https://raw.githubusercontent.com/Anhduchb01/plugin-storeleads-brain/main/install.sh | bash
 ```
 
-Để ghi được nguyên văn câu hỏi/câu trả lời cần thêm hook (plugin làm sẵn, xem `plugin/hooks/hooks.json`). Khi
-cài như trên, server tên `storeleads-brain` nên trong hook dùng `"server": "storeleads-brain"`.
+**Windows** — PowerShell:
+
+```powershell
+irm https://raw.githubusercontent.com/Anhduchb01/plugin-storeleads-brain/main/install.ps1 | iex
+```
+
+Installer kiểm tra token, cài plugin `storeleads-brain` (kết nối MCP + hook ghi câu hỏi/câu trả lời), lưu token
+trong keychain và cho phép tool của plugin chạy không cần hỏi. Mở lại Claude Code là xong. Dùng song song với
+plugin StoreLeads hiện tại; chạy lại dòng cài để đổi token hoặc cập nhật.
+
+Không có ô nhập (chạy trong Claude, Orca): dán token vào cuối lệnh —
+`curl -fsSL …/install.sh | bash -s -- <token>` ·
+`& ([scriptblock]::Create((irm …/install.ps1))) <token>`.
+
+Gỡ: `claude plugin uninstall storeleads-brain@storeleads-brain`.
 
 ## Phát triển
 

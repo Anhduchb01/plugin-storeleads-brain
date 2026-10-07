@@ -28,7 +28,7 @@ for (const [from, to] of rewrites) {
   if (!skill.includes(from)) throw new Error(`SKILL.md no longer contains:\n${from}\nUpdate scripts/build-skill.mjs.`);
   skill = skill.replace(from, to);
 }
-skill += readFileSync('plugin/skill-memory-protocol.md', 'utf8');
+skill += readFileSync('skill-src/memory-protocol.md', 'utf8');
 
 rmSync('dist/skill', { recursive: true, force: true });
 mkdirSync(OUT, { recursive: true });

@@ -68,6 +68,12 @@ export function createApp(opts: AppOptions): BrainApp {
     resourceMetadataUrl: opts.oauth ? getOAuthProtectedResourceMetadataUrl(mcpUrl) : undefined,
   });
 
+  // Token check for the installers: who does this token belong to?
+  app.get('/whoami', auth, (req, res) => {
+    const extra = (req.auth?.extra ?? {}) as { userId?: string; userName?: string };
+    res.json({ userId: extra.userId ?? '', userName: extra.userName ?? '' });
+  });
+
   const closeSession = (id: string) => {
     const s = sessions.get(id);
     if (!s) return;

@@ -1,0 +1,18 @@
+{
+  "name": "storeleads-brain",
+  "displayName": "StoreLeads Brain",
+  "version": "0.1.0",
+  "description": "Connects Claude Code to StoreLeads Brain: logs each question and answer, recalls team memory, read-only StoreLeads SQL. Internal use only.",
+  "author": { "name": "Qikify / Ownego" },
+  "repository": "https://github.com/Anhduchb01/plugin-storeleads-brain",
+  "keywords": ["storeleads", "memory"],
+  "userConfig": {
+    "brain_token": {
+      "type": "string",
+      "title": "StoreLeads Brain token",
+      "sensitive": true,
+      "required": true,
+      "description": "Personal token for storeleads-brain.ecvision.ai. Ask Đức on Slack."
+    }
+  }
+}

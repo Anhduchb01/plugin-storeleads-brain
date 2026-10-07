@@ -1,18 +1,11 @@
 {
   "hooks": {
-    "SessionStart": [
-      {
-        "hooks": [
-          { "type": "command", "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/auto-update.sh\"" }
-        ]
-      }
-    ],
     "UserPromptSubmit": [
       {
         "hooks": [
           {
             "type": "mcp_tool",
-            "server": "plugin:storeleads:brain",
+            "server": "plugin:storeleads-brain:brain",
             "tool": "recall",
             "input": { "question": "${prompt}", "via": "hook", "client_session": "${session_id}" },
             "timeout": 5
@@ -25,7 +18,7 @@
         "hooks": [
           {
             "type": "mcp_tool",
-            "server": "plugin:storeleads:brain",
+            "server": "plugin:storeleads-brain:brain",
             "tool": "record",
             "input": { "answer": "${last_assistant_message}", "via": "hook", "client_session": "${session_id}" },
             "timeout": 10

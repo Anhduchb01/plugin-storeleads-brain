@@ -1,0 +1,12 @@
+{
+  "name": "storeleads-brain",
+  "owner": { "name": "Qikify / Ownego" },
+  "description": "StoreLeads Brain: team memory and Q&A log for the StoreLeads Claude plugin. Internal use only.",
+  "plugins": [
+    {
+      "name": "storeleads-brain",
+      "source": "./plugin",
+      "description": "Connects Claude Code to StoreLeads Brain (storeleads-brain.ecvision.ai): logs each question and answer, recalls team memory, read-only StoreLeads SQL."
+    }
+  ]
+}

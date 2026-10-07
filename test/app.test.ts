@@ -58,6 +58,13 @@ describe('MCP endpoint (token auth)', () => {
     expect(res.headers.get('www-authenticate')).not.toContain('resource_metadata');
   });
 
+  it('tells an installer whose token it is', async () => {
+    const { base } = await start();
+    const ok = await fetch(new URL('/whoami', base), { headers: { authorization: 'Bearer tok-an' } });
+    expect(await ok.json()).toEqual({ userId: 'U_AN', userName: 'U_AN' });
+    expect((await fetch(new URL('/whoami', base), { headers: { authorization: 'Bearer nope' } })).status).toBe(401);
+  });
+
   it('runs a whole web-style turn and logs it with the user and client', async () => {
     const { base, store, tracker } = await start();
     const { client } = await connect(base, 'tok-an');
