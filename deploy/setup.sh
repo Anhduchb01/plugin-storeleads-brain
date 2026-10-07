@@ -35,5 +35,7 @@ if ! grep -q '^BRAIN_USER=' .env; then
   if docker info --format '{{.SecurityOptions}}' 2>/dev/null | grep -q rootless; then user=0:0; else user="$(id -u):$(id -g)"; fi
   printf 'BRAIN_USER=%s\n' "$user" >> .env
 fi
-[ -f tokens.txt ] || { printf '# token user_id display name   (deploy/new-token.sh adds lines)\n' > tokens.txt; echo "wrote deploy/tokens.txt"; }
-chmod 600 .env tokens.txt
+mkdir -p tokens && chmod 700 tokens
+[ -f tokens.txt ] && [ ! -f tokens/tokens.txt ] && mv tokens.txt tokens/tokens.txt   # layout before 2026-10-07
+[ -f tokens/tokens.txt ] || { printf '# token user_id display name   (new-token.sh adds, revoke-token.sh removes)\n' > tokens/tokens.txt; echo "wrote deploy/tokens/tokens.txt"; }
+chmod 600 .env tokens/tokens.txt

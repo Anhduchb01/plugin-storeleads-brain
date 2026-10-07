@@ -33,7 +33,7 @@ Cloudflare tunnel `ecvision-staging`.
 ```bash
 git clone https://github.com/Anhduchb01/plugin-storeleads-brain.git ~/storeleads-brain
 cd ~/storeleads-brain/deploy
-./setup.sh               # .env với secret ngẫu nhiên + tokens.txt (giữ nguyên nếu đã có)
+./setup.sh               # .env với secret ngẫu nhiên + tokens/tokens.txt (giữ nguyên nếu đã có)
 ./clickhouse-setup.sh    # database usage, user brain_read (chỉ SELECT slim), brain_write (SELECT/INSERT usage)
 docker compose up -d --build
 curl -s localhost:3210/healthz
@@ -42,10 +42,11 @@ curl -s localhost:3210/healthz
 Cloudflare Zero Trust → Networks → Tunnels → `ecvision-staging` → Public hostnames → Add:
 `storeleads-brain.ecvision.ai` → `HTTP` → `localhost:3210`.
 
-Cấp token cho một người (server tự nạp lại, không cần restart; thu hồi = xoá dòng trong `tokens.txt`):
+Cấp / thu hồi token (server tự nạp lại trong vài giây, không cần restart):
 
 ```bash
-./new-token.sh U012ABC "Nguyễn Văn A"
+./new-token.sh U012ABC "Nguyễn Văn A"   # in token ra một lần
+./revoke-token.sh U012ABC
 ```
 
 Cập nhật: `git pull && docker compose up -d --build`.

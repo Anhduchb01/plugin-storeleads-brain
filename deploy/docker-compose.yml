@@ -6,7 +6,7 @@ services:
     image: storeleads-brain:latest
     container_name: storeleads-brain
     restart: unless-stopped
-    # Must be able to read tokens.txt (mode 600, owned by the deploying user). setup.sh writes BRAIN_USER:
+    # Must be able to read tokens/tokens.txt (mode 600, owned by the deploying user). setup.sh writes BRAIN_USER:
     # 0:0 under rootless Docker (container root = that host user), else the host uid:gid.
     user: "${BRAIN_USER:-node}"
     env_file: .env
@@ -18,7 +18,8 @@ services:
     ports:
       - "127.0.0.1:${BRAIN_PORT:-3210}:8080"
     volumes:
-      - ./tokens.txt:/run/brain/tokens.txt:ro
+      # A directory, not the file: editors and sed -i replace the file, which a single-file mount would not see.
+      - ./tokens:/run/brain:ro
     mem_limit: 512m
     networks: [clickhouse_default]
 networks:

@@ -64,7 +64,8 @@ export function createApp(opts: AppOptions): BrainApp {
   const auth = requireBearerAuth({
     verifier: opts.verifier,
     requiredScopes: [SCOPE],
-    resourceMetadataUrl: getOAuthProtectedResourceMetadataUrl(mcpUrl),
+    // Only advertise OAuth when there is an OAuth server; in token mode a bad token should just fail.
+    resourceMetadataUrl: opts.oauth ? getOAuthProtectedResourceMetadataUrl(mcpUrl) : undefined,
   });
 
   const closeSession = (id: string) => {

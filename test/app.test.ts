@@ -54,7 +54,8 @@ describe('MCP endpoint (token auth)', () => {
     const { base } = await start();
     const res = await fetch(new URL('/mcp', base), { method: 'POST', body: '{}', headers: { 'content-type': 'application/json' } });
     expect(res.status).toBe(401);
-    expect(res.headers.get('www-authenticate')).toContain('resource_metadata');
+    // Token mode has no OAuth server to point clients at.
+    expect(res.headers.get('www-authenticate')).not.toContain('resource_metadata');
   });
 
   it('runs a whole web-style turn and logs it with the user and client', async () => {
