@@ -31,6 +31,9 @@ ENV
 else
   echo "deploy/.env exists, kept"
 fi
-grep -q '^BRAIN_UID=' .env || printf 'BRAIN_UID=%s\nBRAIN_GID=%s\n' "$(id -u)" "$(id -g)" >> .env
+if ! grep -q '^BRAIN_USER=' .env; then
+  if docker info --format '{{.SecurityOptions}}' 2>/dev/null | grep -q rootless; then user=0:0; else user="$(id -u):$(id -g)"; fi
+  printf 'BRAIN_USER=%s\n' "$user" >> .env
+fi
 [ -f tokens.txt ] || { printf '# token user_id display name   (deploy/new-token.sh adds lines)\n' > tokens.txt; echo "wrote deploy/tokens.txt"; }
 chmod 600 .env tokens.txt
