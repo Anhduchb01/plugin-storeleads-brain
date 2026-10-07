@@ -6,6 +6,8 @@ services:
     image: storeleads-brain:latest
     container_name: storeleads-brain
     restart: unless-stopped
+    # Run as the host user that owns tokens.txt (mode 600). setup.sh writes BRAIN_UID / BRAIN_GID.
+    user: "${BRAIN_UID:-1000}:${BRAIN_GID:-1000}"
     env_file: .env
     environment:
       NODE_ENV: production

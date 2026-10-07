@@ -31,5 +31,6 @@ ENV
 else
   echo "deploy/.env exists, kept"
 fi
+grep -q '^BRAIN_UID=' .env || printf 'BRAIN_UID=%s\nBRAIN_GID=%s\n' "$(id -u)" "$(id -g)" >> .env
 [ -f tokens.txt ] || { printf '# token user_id display name   (deploy/new-token.sh adds lines)\n' > tokens.txt; echo "wrote deploy/tokens.txt"; }
 chmod 600 .env tokens.txt
