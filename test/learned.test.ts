@@ -16,6 +16,14 @@ describe('learned → memory', () => {
     expect(c[0].keys).toContain('yotpo');
   });
 
+  it('pulls a preference out of the middle of a line', () => {
+    const c = learnedCandidates('Correction: Yotpo means the SMS app. Preference: always count only Plus stores.');
+    expect(c.map((m) => [m.kind, m.text])).toEqual([
+      ['note', 'Correction: Yotpo means the SMS app.'],
+      ['preference', 'always count only Plus stores.'],
+    ]);
+  });
+
   it('a note learned by one person is recalled for a teammate; three turns verify it', async () => {
     const store = new InMemoryUsageStore();
     const line = 'Yotpo for the team usually means yotpo-email-marketing-and-sms, not the reviews app';

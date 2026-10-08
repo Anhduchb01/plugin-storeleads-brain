@@ -8,7 +8,9 @@ import type { TurnRecord, UsageStore } from './store.js';
 
 export function learnedCandidates(learned: string): MemoryCandidate[] {
   const out: MemoryCandidate[] = [];
-  for (const raw of learned.split(/\n|;\s+/)) {
+  // Claude often writes "…. Preference: …" mid-line, so a preference starts a new piece wherever it appears.
+  const pieces = learned.split(/\n|;\s+/).flatMap((l) => l.split(/(?=\bpreference\s*:)/i));
+  for (const raw of pieces) {
     const line = raw.replace(/^[-*•\s]+/, '').trim();
     if (line.length < 8) continue;
     const pref = /^preference\s*:\s*/i.exec(line);
