@@ -1,7 +1,7 @@
 {
   "name": "storeleads-brain",
   "displayName": "StoreLeads Brain",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "The team's shared second brain for StoreLeads: every question and what it taught is kept, so the next person gets a better answer. Read-only StoreLeads SQL. Internal use only.",
   "author": {
     "name": "Qikify / Ownego"
