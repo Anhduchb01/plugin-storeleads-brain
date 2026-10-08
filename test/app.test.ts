@@ -77,7 +77,10 @@ describe('MCP endpoint (token auth)', () => {
     expect(bad.isError).toBe(true);
     const good = await client.callTool({ name: 'query_sql', arguments: { sql: 'SELECT 1' } });
     expect(text(good)).toContain('Klaviyo\t12943');
-    await client.callTool({ name: 'record', arguments: { answer: 'Klaviyo: 12.943 store (9/2026)', outcome: 'answered' } });
+    await client.callTool({
+      name: 'record',
+      arguments: { answer: 'Klaviyo: 12.943 store (9/2026)', outcome: 'answered', learned: 'Klaviyo = klaviyo-email-marketing' },
+    });
     await tracker.flush();
 
     expect(store.turns).toHaveLength(1);
@@ -87,6 +90,7 @@ describe('MCP endpoint (token auth)', () => {
       question: 'Klaviyo có bao nhiêu store?',
       answer: 'Klaviyo: 12.943 store (9/2026)',
       modelOutcome: 'answered',
+      modelLearned: 'Klaviyo = klaviyo-email-marketing',
     });
     expect(store.turns[0].queries.map((q) => q.ok)).toEqual([false, true]);
     await client.close();

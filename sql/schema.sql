@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS usage.qa_log
     answer_source    LowCardinality(String),      -- hook | tool | none
     model_outcome    LowCardinality(String),      -- outcome hint passed to record, '' if none
     model_data_gap   String,
+    model_learned    String,                      -- what Claude said is worth remembering (record's learned)
     q_sql            Array(String),
     q_ok             Array(UInt8),
     q_error          Array(String),
@@ -33,6 +34,9 @@ CREATE TABLE IF NOT EXISTS usage.qa_log
 ENGINE = MergeTree
 PARTITION BY toYYYYMM(started_at)
 ORDER BY (started_at, user_id);
+
+-- Columns added after the first deploy (no-op when present).
+ALTER TABLE usage.qa_log ADD COLUMN IF NOT EXISTS model_learned String AFTER model_data_gap;
 
 -- What the distiller made of each turn. Join on turn_id.
 CREATE TABLE IF NOT EXISTS usage.qa_distill

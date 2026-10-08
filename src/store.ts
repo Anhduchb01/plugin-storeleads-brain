@@ -27,6 +27,8 @@ export interface TurnRecord {
   answerSource: Source;
   modelOutcome: string;
   modelDataGap: string;
+  /** What Claude said is worth remembering for next time (record's `learned`). */
+  modelLearned: string;
   queries: QueryLog[];
   recalledIds: string[];
 }
@@ -175,6 +177,7 @@ export class ClickHouseUsageStore implements UsageStore {
         answer_source: t.answerSource,
         model_outcome: t.modelOutcome,
         model_data_gap: t.modelDataGap,
+        model_learned: t.modelLearned,
         q_sql: t.queries.map((q) => q.sql),
         q_ok: t.queries.map((q) => (q.ok ? 1 : 0)),
         q_error: t.queries.map((q) => q.error),

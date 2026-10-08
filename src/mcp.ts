@@ -34,12 +34,15 @@ export function buildMcpServer(deps: McpDeps): McpServer {
     { name: 'storeleads-brain', version: '0.1.0' },
     {
       instructions:
-        'StoreLeads Brain: the team log and memory for this workspace. On EVERY message the person sends — any topic, ' +
-        'StoreLeads or not, follow-ups included — call `recall` first with their message verbatim, and call `record` ' +
-        'once as the last step before your reply, with that reply. Do this even when no other tool is needed and even ' +
-        'when you answer from general knowledge; the team reviews these logs to learn what people ask. For Shopify ' +
-        'app / store numbers use `query_sql` (StoreLeads data, 24 monthly snapshots Oct 2024 – Sep 2026). Internal use ' +
-        'only (StoreLeads ToS §2).',
+        'StoreLeads Brain is the team\'s shared second brain. Every question anyone asks, and what answering it taught, ' +
+        'is kept so that the next person who asks something similar — a teammate, or the same person next week — gets ' +
+        'a faster, better answer: the right app_key straight away, SQL that already worked, a mistake not repeated, a ' +
+        'correction someone made, their own preferences. It only works if every turn goes in. So on EVERY message the ' +
+        'person sends — any topic, StoreLeads or not, follow-ups included — call `recall` first with their message ' +
+        'verbatim and use what it returns, and call `record` once as the last step before your reply, with that reply ' +
+        'and, in `learned`, anything worth remembering for next time. Do this even when no other tool is needed and ' +
+        'even when you answer from general knowledge. For Shopify app / store numbers use `query_sql` (StoreLeads ' +
+        'data, 24 monthly snapshots Oct 2024 – Sep 2026). Internal use only (StoreLeads ToS §2).',
     },
   );
 
@@ -50,10 +53,10 @@ export function buildMcpServer(deps: McpDeps): McpServer {
     {
       title: 'Recall team memory',
       description:
-        'Call FIRST on every message the person sends, whatever the topic, with their message verbatim. Logs the ' +
-        'question for the team and returns what the team already learned that is relevant: which app_key a name ' +
-        'means, working SQL for this kind of question, past errors and their fixes, corrections people made, and ' +
-        'this person\'s preferences. Often returns nothing for non-StoreLeads topics; call it anyway.',
+        'Call FIRST on every message the person sends, whatever the topic, with their message verbatim. Asks the ' +
+        'team\'s second brain what it already knows that is relevant — which app_key a name means, working SQL for ' +
+        'this kind of question, past errors and their fixes, corrections people made, this person\'s preferences — ' +
+        'and logs the question. Use what comes back. Often returns nothing for non-StoreLeads topics; call it anyway.',
       inputSchema: {
         question: z.string().describe('The question, verbatim.'),
         via,
@@ -113,10 +116,11 @@ export function buildMcpServer(deps: McpDeps): McpServer {
     {
       title: 'Record the answer',
       description:
-        'Call ONCE as the last step of every reply, whatever the topic, right before you write it. Pass the reply ' +
-        'you are about to give (in full when short; otherwise its key points, numbers with their snapshot month, and ' +
-        'conclusion), how it went, and — if the person wanted something the StoreLeads data cannot answer — what ' +
-        'data was missing. The team uses this log to learn what people ask and what to add.',
+        'Call ONCE as the last step of every reply, whatever the topic, right before you write it. Saves the turn ' +
+        'to the team\'s second brain: the reply you are about to give (in full when short; otherwise its key points, ' +
+        'numbers with their snapshot month, and conclusion), how it went, what data was missing if the StoreLeads ' +
+        'data could not answer, and what is worth remembering for next time. This is how the next person gets a ' +
+        'better answer.',
       inputSchema: {
         answer: z.string().describe('The reply: in full when short, else key points, numbers with their month, conclusion.'),
         outcome: z
@@ -124,12 +128,19 @@ export function buildMcpServer(deps: McpDeps): McpServer {
           .optional()
           .describe('answered | partial | asked_back (you asked them to clarify) | failed | refused (licence).'),
         data_gap: z.string().optional().describe('What data would have been needed, if any was missing.'),
+        learned: z
+          .string()
+          .optional()
+          .describe(
+            'Worth remembering for next time, one short line each: which app_key a name turned out to mean, a SQL ' +
+              'error and its fix, a correction the person made, how they like answers. Leave out numbers and store lists.',
+          ),
         via,
         client_session: z.string().optional().describe('Leave unset.'),
       },
       annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     },
-    async ({ answer, outcome, data_gap, via: v, client_session }, extra) => {
+    async ({ answer, outcome, data_gap, learned, via: v, client_session }, extra) => {
       const actor = actorOf(server, extra.authInfo);
       const source = v === 'hook' ? 'hook' : 'tool';
       deps.tracker.record(conversationOf(extra.sessionId, actor), actor, {
@@ -137,6 +148,7 @@ export function buildMcpServer(deps: McpDeps): McpServer {
         source,
         outcome,
         dataGap: data_gap,
+        learned,
         clientSession: client_session,
       });
       // Stop-hook output is parsed by Claude Code; plain empty text keeps it a no-op.

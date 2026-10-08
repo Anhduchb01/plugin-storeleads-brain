@@ -75,7 +75,7 @@ export class TurnTracker {
   record(
     conversation: string,
     actor: Actor,
-    input: { answer: string; source: Source; outcome?: string; dataGap?: string; clientSession?: string },
+    input: { answer: string; source: Source; outcome?: string; dataGap?: string; learned?: string; clientSession?: string },
   ): string | undefined {
     let turn = this.open.get(conversation);
     if (!turn) {
@@ -89,6 +89,7 @@ export class TurnTracker {
     }
     if (input.outcome) turn.modelOutcome = input.outcome;
     if (input.dataGap) turn.modelDataGap = input.dataGap;
+    if (input.learned) turn.modelLearned = input.learned;
     if (input.clientSession && !turn.clientSession) turn.clientSession = input.clientSession;
     turn.lastActivity = this.now();
     if (input.source === 'tool') turn.recordedByModel = true;
@@ -143,6 +144,7 @@ export class TurnTracker {
       answerSource: 'none',
       modelOutcome: '',
       modelDataGap: '',
+      modelLearned: '',
       queries: [],
       recalledIds: [],
       lastActivity: t,

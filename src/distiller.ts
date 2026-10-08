@@ -110,7 +110,11 @@ export function buildTurnMessage(turn: TurnRecord, previous?: Pick<TurnRecord, '
         : null,
       question: turn.question || '(not captured — infer from the queries and the answer)',
       answer: turn.answer ? clip(turn.answer, 60_000) : '(not captured)',
-      assistant_reported: { outcome: turn.modelOutcome || null, data_gap: turn.modelDataGap || null },
+      assistant_reported: {
+        outcome: turn.modelOutcome || null,
+        data_gap: turn.modelDataGap || null,
+        learned: turn.modelLearned || null,
+      },
       queries,
     },
     null,

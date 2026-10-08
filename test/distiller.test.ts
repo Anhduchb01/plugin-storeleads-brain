@@ -31,6 +31,7 @@ function turn(over: Partial<TurnRecord> = {}): TurnRecord {
     answerSource: 'tool',
     modelOutcome: '',
     modelDataGap: '',
+    modelLearned: '',
     queries: [{ sql: "SELECT ... WHERE app_key = 'yotpo-product-reviews'", ok: true, error: '', rows: 1, ms: 9 }],
     recalledIds: [],
     ...over,
