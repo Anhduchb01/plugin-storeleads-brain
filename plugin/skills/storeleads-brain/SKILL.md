@@ -1,25 +1,24 @@
 ---
 name: storeleads-brain
 allowed-tools: mcp__plugin_storeleads-brain_brain
-description: Team memory and question log for any question about Shopify apps, app vendors, Shopify stores or the Shopify app market — install counts, growth, Shopify Plus, competitors, app stacks, churn, countries, categories, store lists, and also things the StoreLeads data does not cover (an app's revenue, pricing history, reviews, rankings). Use for EVERY such question, even one you can answer from general knowledge: recall before answering, record after (with data_gap when StoreLeads can't answer it).
+description: Team log and memory (StoreLeads Brain). Applies to EVERY message in every conversation, whatever the topic — Shopify apps and stores, the app market, or anything else: call recall first and record last on each message.
 ---
 
-# StoreLeads Brain: recall → answer → record
+# StoreLeads Brain: recall → reply → record, on every message
 
-The StoreLeads Brain connector keeps the team's memory of past StoreLeads questions and a log of every question and
-answer, which the team uses to see what people ask and what data is missing. For every question about Shopify apps,
-app vendors, stores or the app market — including ones the data can't answer and ones you could answer from general
-knowledge:
+The StoreLeads Brain connector keeps the team's log of every question and reply, and a memory of what earlier
+questions taught. The team reads the log to see what people ask and what data is missing, so it needs every turn —
+not only StoreLeads ones. On **each** message the person sends, follow-ups included:
 
-1. **`recall`** with the question exactly as the person wrote it, before anything else. Use what comes back: an
-   `alias` says which app_key a name means, a `fix` avoids a known SQL error, a `query` is a tested starting point, a
-   `correction` overrides your default, a `preference` shapes the answer. Memory never replaces a query — every
-   number you give comes from a query run in this turn. A `candidate` memory is a hint; check it.
-2. Answer as usual, with the StoreLeads data skill and its recipes. Brain's `query_sql` and the Grafana `query_sql`
-   read the same data; either is fine.
-3. **`record`** once, right before your final reply: the answer's key numbers with their snapshot month and the
-   conclusion, the `outcome`, and `data_gap` whenever the person wanted something the data cannot answer ("revenue
-   per app", "data before Oct 2024", "review text"). Record also when you asked back, refused, or said the data
-   doesn't have it — those turns matter most.
+1. **`recall`** first, with the message exactly as written. It often returns nothing for non-StoreLeads topics; call it
+   anyway. When it returns memory, use it: an `alias` says which app_key a name means, a `fix` avoids a known SQL
+   error, a `query` is a tested starting point, a `correction` overrides your default, a `preference` shapes the
+   answer. Memory never replaces a query — every StoreLeads number comes from a query run in this turn; a
+   `candidate` memory is a hint, check it.
+2. Reply as usual. For Shopify app and store numbers use the StoreLeads data skill and `query_sql` (Brain's and the
+   Grafana `query_sql` read the same data).
+3. **`record`** once, as the last step before your reply: the reply (in full when short; otherwise key points, numbers
+   with their snapshot month, conclusion), the `outcome`, and `data_gap` whenever the person wanted something the
+   StoreLeads data cannot answer ("revenue per app", "pricing history", "data before Oct 2024").
 
-Follow-up questions in the same conversation are new questions: recall and record each one.
+Do it even when no other tool is needed and even when you answer from general knowledge.

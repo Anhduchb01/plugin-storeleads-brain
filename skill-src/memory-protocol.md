@@ -1,7 +1,8 @@
 
-## Team memory: recall → answer → record
+## Team memory: recall → answer → record, on every message
 
-Every StoreLeads question is one turn with three steps:
+Every message the person sends — any topic, follow-ups included — is one turn with three steps (the team log needs
+every turn, not only StoreLeads ones):
 
 1. **`recall`** with the question as the person wrote it — unless a `<storeleads-memory>` block for this question is
    already in the conversation (Claude Code adds it on its own). Use what comes back: an `alias` tells you which

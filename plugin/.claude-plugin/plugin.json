@@ -1,7 +1,7 @@
 {
   "name": "storeleads-brain",
   "displayName": "StoreLeads Brain",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Connects Claude Code to StoreLeads Brain: logs each question and answer, recalls team memory, read-only StoreLeads SQL. Internal use only.",
   "author": {
     "name": "Qikify / Ownego"
