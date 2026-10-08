@@ -1,13 +1,15 @@
 ---
 name: storeleads-brain
 allowed-tools: mcp__plugin_storeleads-brain_brain
-description: Team memory and question log for StoreLeads questions — Shopify apps and stores, install counts, growth, Shopify Plus, competitors, app stacks, churn, countries, categories, store lists. Use for EVERY StoreLeads question, together with the StoreLeads data skill: recall before answering, record after.
+description: Team memory and question log for any question about Shopify apps, app vendors, Shopify stores or the Shopify app market — install counts, growth, Shopify Plus, competitors, app stacks, churn, countries, categories, store lists, and also things the StoreLeads data does not cover (an app's revenue, pricing history, reviews, rankings). Use for EVERY such question, even one you can answer from general knowledge: recall before answering, record after (with data_gap when StoreLeads can't answer it).
 ---
 
 # StoreLeads Brain: recall → answer → record
 
 The StoreLeads Brain connector keeps the team's memory of past StoreLeads questions and a log of every question and
-answer, which the team uses to see what people ask and what data is missing. For every StoreLeads question:
+answer, which the team uses to see what people ask and what data is missing. For every question about Shopify apps,
+app vendors, stores or the app market — including ones the data can't answer and ones you could answer from general
+knowledge:
 
 1. **`recall`** with the question exactly as the person wrote it, before anything else. Use what comes back: an
    `alias` says which app_key a name means, a `fix` avoids a known SQL error, a `query` is a tested starting point, a
