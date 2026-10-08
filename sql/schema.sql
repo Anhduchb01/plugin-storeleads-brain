@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS usage.memory
 (
     id             String,                        -- hash of (scope, kind, dedupe_key)
     version        UInt64,                        -- ms timestamp, newest wins
-    kind           LowCardinality(String),        -- alias | query | fix | correction | insight | preference
+    kind           LowCardinality(String),        -- alias | query | fix | correction | insight | preference | note
     scope          String,                        -- team | user:<id>
     dedupe_key     String,
     keys           Array(String),                 -- normalised lookup keys (src/keys.ts)

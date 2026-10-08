@@ -6,6 +6,7 @@ import { StaticTokenVerifier } from './auth/static.js';
 import { TokenSigner } from './auth/tokens.js';
 import { loadConfig } from './config.js';
 import { Distiller, claudeClassifier } from './distiller.js';
+import { fileLearned } from './learned.js';
 import { clickhouseRunner } from './query.js';
 import { ClickHouseUsageStore } from './store.js';
 import { TurnTracker } from './turns.js';
@@ -36,6 +37,7 @@ const tracker = new TurnTracker({
   log,
   persist: async (turn) => {
     await store.insertTurn(turn);
+    await fileLearned(store, turn).catch((err) => log(`learned ${turn.turnId} not filed`, err));
     distiller?.enqueue(turn);
   },
 });

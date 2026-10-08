@@ -32,8 +32,11 @@ export const USE_CASES: Record<string, string> = {
 /** A candidate becomes verified once this many distinct turns produced it (or a person confirmed it). */
 export const PROMOTE_AT_EVIDENCE = 3;
 
+/** The distiller files these; `note` is what Claude's own `learned` lines become (learned.ts). */
+const DISTILL_KINDS = ['alias', 'query', 'fix', 'correction', 'insight', 'preference'] as const;
+
 const MemorySchema = z.object({
-  kind: z.enum(MEMORY_KINDS),
+  kind: z.enum(DISTILL_KINDS),
   dedupe_key: z.string(),
   keys: z.array(z.string()),
   text: z.string(),
@@ -53,7 +56,7 @@ export const DistillSchema = z.object({
   memories: z.array(MemorySchema),
 });
 export type DistillOutput = z.infer<typeof DistillSchema>;
-export type MemoryCandidate = z.infer<typeof MemorySchema>;
+export type MemoryCandidate = Omit<z.infer<typeof MemorySchema>, 'kind'> & { kind: (typeof MEMORY_KINDS)[number] };
 
 export const SYSTEM_PROMPT = `You review one question → answer turn from Qikify's internal StoreLeads assistant and file it.
 

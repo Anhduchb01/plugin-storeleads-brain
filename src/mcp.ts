@@ -133,7 +133,8 @@ export function buildMcpServer(deps: McpDeps): McpServer {
           .optional()
           .describe(
             'Worth remembering for next time, one short line each: which app_key a name turned out to mean, a SQL ' +
-              'error and its fix, a correction the person made, how they like answers. Leave out numbers and store lists.',
+              'error and its fix, a correction the person made. Start a line with "Preference:" for how this person ' +
+              'likes answers (kept for them only). Leave out numbers and store lists.',
           ),
         via,
         client_session: z.string().optional().describe('Leave unset.'),

@@ -33,7 +33,7 @@ export interface TurnRecord {
   recalledIds: string[];
 }
 
-export const MEMORY_KINDS = ['alias', 'query', 'fix', 'correction', 'insight', 'preference'] as const;
+export const MEMORY_KINDS = ['alias', 'query', 'fix', 'correction', 'insight', 'preference', 'note'] as const;
 export type MemoryKind = (typeof MEMORY_KINDS)[number];
 export type MemoryStatus = 'candidate' | 'verified' | 'rejected';
 

@@ -19,8 +19,8 @@ export async function recall(store: UsageStore, question: string, userId: string
   const scope = `user:${userId}`;
   const keys = keysFor(question);
   const [hits, prefs] = await Promise.all([store.searchMemories(keys, scope, limit), store.preferences(scope, 3)]);
-  // Preferences only ride along when the question is about StoreLeads at all (something matched).
-  const memories = hits.length ? [...hits, ...prefs] : [];
+  // The person's own preferences always come along: they shape any answer.
+  const memories = [...hits, ...prefs];
   return { memories, text: formatRecall(memories) };
 }
 
