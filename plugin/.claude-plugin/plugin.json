@@ -1,11 +1,16 @@
 {
   "name": "storeleads-brain",
   "displayName": "StoreLeads Brain",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Connects Claude Code to StoreLeads Brain: logs each question and answer, recalls team memory, read-only StoreLeads SQL. Internal use only.",
-  "author": { "name": "Qikify / Ownego" },
+  "author": {
+    "name": "Qikify / Ownego"
+  },
   "repository": "https://github.com/Anhduchb01/plugin-storeleads-brain",
-  "keywords": ["storeleads", "memory"],
+  "keywords": [
+    "storeleads",
+    "memory"
+  ],
   "userConfig": {
     "brain_token": {
       "type": "string",

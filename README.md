@@ -20,7 +20,7 @@ src/
   auth/          static.ts (token cá nhân), slack.ts (OAuth 2.1 + Slack OIDC), tokens.ts (JWT)
 sql/schema.sql   database usage
 deploy/          docker-compose + script cho máy ecvision
-plugin/          plugin Claude Code storeleads-brain (.mcp.json, hooks), marketplace ở .claude-plugin/
+plugin/          plugin Claude Code storeleads-brain (.mcp.json + skill), marketplace ở .claude-plugin/
 install.sh/.ps1  installer một dòng cho user
 skill-src/       bản sao skill StoreLeads + mục Team memory (nguồn cho build:skill và test)
 scripts/         build-skill.mjs, smoke.ts
@@ -70,7 +70,8 @@ curl -fsSL https://raw.githubusercontent.com/Anhduchb01/plugin-storeleads-brain/
 irm https://raw.githubusercontent.com/Anhduchb01/plugin-storeleads-brain/main/install.ps1 | iex
 ```
 
-Installer kiểm tra token, cài plugin `storeleads-brain` (kết nối MCP + hook ghi câu hỏi/câu trả lời), lưu token
+Installer kiểm tra token, cài plugin `storeleads-brain` (kết nối MCP + skill dặn Claude gọi `recall` trước, `record`
+sau — không có hook, Claude tự quyết như trên claude.ai), lưu token
 trong keychain và cho phép tool của plugin chạy không cần hỏi. Mở lại Claude Code là xong. Dùng song song với
 plugin StoreLeads hiện tại; chạy lại dòng cài để đổi token hoặc cập nhật.
 
