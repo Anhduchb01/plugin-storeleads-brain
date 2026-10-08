@@ -72,12 +72,16 @@ irm https://raw.githubusercontent.com/Anhduchb01/plugin-storeleads-brain/main/in
 
 Installer kiểm tra token, cài plugin `storeleads-brain` (kết nối MCP + skill dặn Claude gọi `recall` trước, `record`
 sau — không có hook, Claude tự quyết như trên claude.ai), lưu token
-trong keychain và cho phép tool của plugin chạy không cần hỏi. Mở lại Claude Code là xong. Dùng song song với
+trong keychain, cho phép tool của plugin chạy không cần hỏi và bật tự cập nhật cho marketplace. Mở lại Claude Code là xong. Dùng song song với
 plugin StoreLeads hiện tại; chạy lại dòng cài để đổi token hoặc cập nhật.
 
 Không có ô nhập (chạy trong Claude, Orca): dán token vào cuối lệnh —
 `curl -fsSL …/install.sh | bash -s -- <token>` ·
 `& ([scriptblock]::Create((irm …/install.ps1))) <token>`.
+
+Phát hành bản plugin mới (skill, `.mcp.json`): **tăng `version` trong `plugin/.claude-plugin/plugin.json`** rồi push.
+User đã cài bằng installer tự nhận bản mới (auto-update bật sẵn) ở lần mở Claude Code sau. Thay đổi phía server
+(tool, instructions, cách lưu) không cần bản plugin mới — deploy server là đủ.
 
 Gỡ: `claude plugin uninstall storeleads-brain@storeleads-brain`.
 

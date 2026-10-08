@@ -46,7 +46,8 @@ function Install-StoreLeadsBrain {
   if ($LASTEXITCODE -ne 0) { Fail 'Lưu token không được. Nhắn Đức kèm ảnh chụp màn hình này.'; return }
   Say '✓ Plugin StoreLeads Brain đã cài, token lưu an toàn'
 
-  # 3 · pre-approve only this plugin's tools. Nothing else is touched.
+  # 3 · pre-approve only this plugin's tools and turn on background auto-update for this marketplace (off by
+  #     default, no CLI flag). Nothing else is touched.
   try {
     $p = Join-Path $HOME '.claude\settings.json'
     New-Item -ItemType Directory -Force -Path (Join-Path $HOME '.claude') | Out-Null
@@ -56,9 +57,15 @@ function Install-StoreLeadsBrain {
     $allow = @($s.permissions.allow)
     if ($allow -notcontains 'mcp__plugin_storeleads-brain_brain') { $allow += 'mcp__plugin_storeleads-brain_brain' }
     $s.permissions.allow = $allow
+    if (-not $s.PSObject.Properties['extraKnownMarketplaces']) { $s | Add-Member extraKnownMarketplaces ([pscustomobject]@{}) }
+    if (-not $s.extraKnownMarketplaces.PSObject.Properties['storeleads-brain']) {
+      $s.extraKnownMarketplaces | Add-Member 'storeleads-brain' ([pscustomobject]@{ source = [pscustomobject]@{ source = 'github'; repo = $Repo } })
+    }
+    $m = $s.extraKnownMarketplaces.'storeleads-brain'
+    if ($m.PSObject.Properties['autoUpdate']) { $m.autoUpdate = $true } else { $m | Add-Member autoUpdate $true }
     $json = $s | ConvertTo-Json -Depth 50
     [IO.File]::WriteAllText($p, $json, (New-Object Text.UTF8Encoding $false))
-    Say '✓ Đã cho phép plugin chạy không cần hỏi'
+    Say '✓ Đã cho phép plugin chạy không cần hỏi, bật tự cập nhật'
   } catch { Write-Host '  (bỏ qua bước cấp quyền — Claude Code sẽ hỏi quyền lần đầu, cứ chọn Yes)' }
 
   Write-Host ''

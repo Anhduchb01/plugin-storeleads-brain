@@ -43,7 +43,8 @@ printf '{"brain_token":"%s"}' "$TOKEN" | claude plugin configure "$PLUGIN" --val
   || die "Lưu token không được. Nhắn Đức kèm ảnh chụp màn hình này."
 say "✓ Plugin StoreLeads Brain đã cài, token lưu trong keychain"
 
-# 3 · pre-approve only this plugin's tools so nobody meets a permission prompt. Other permissions stay as they were.
+# 3 · pre-approve only this plugin's tools so nobody meets a permission prompt, and turn on background auto-update
+#     for this marketplace (off by default, no CLI flag). Other settings stay as they were.
 SETTINGS="$HOME/.claude/settings.json"
 if command -v python3 >/dev/null; then
   python3 - "$SETTINGS" <<'PY' || echo "  (bỏ qua bước cấp quyền — Claude Code sẽ hỏi quyền lần đầu, cứ chọn Yes)"
@@ -53,10 +54,13 @@ s = json.load(open(p)) if os.path.exists(p) and os.path.getsize(p) else {}
 allow = s.setdefault("permissions", {}).setdefault("allow", [])
 if "mcp__plugin_storeleads-brain_brain" not in allow:
     allow.append("mcp__plugin_storeleads-brain_brain")
+m = s.setdefault("extraKnownMarketplaces", {}).setdefault(
+    "storeleads-brain", {"source": {"source": "github", "repo": "Anhduchb01/plugin-storeleads-brain"}})
+m["autoUpdate"] = True
 os.makedirs(os.path.dirname(p), exist_ok=True)
 json.dump(s, open(p, "w"), indent=2, ensure_ascii=False)
 PY
-  say "✓ Đã cho phép plugin chạy không cần hỏi"
+  say "✓ Đã cho phép plugin chạy không cần hỏi, bật tự cập nhật"
 fi
 
 echo
